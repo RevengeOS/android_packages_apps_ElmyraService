@@ -17,7 +17,9 @@
 package org.protonaosp.elmyra.actions
 
 import android.app.StatusBarManager
+import android.content.ActivityNotFoundException;
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.ServiceManager
 
@@ -27,6 +29,11 @@ class AssistantAction(context: Context) : Action(context) {
     val service = IStatusBarService.Stub.asInterface(ServiceManager.getService(Context.STATUS_BAR_SERVICE))
 
     override fun run() {
-        service.startAssist(Bundle())
+        try {
+            var intent = Intent(Intent.ACTION_VOICE_COMMAND).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch(e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
